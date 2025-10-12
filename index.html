@@ -664,18 +664,19 @@ async function submitRSVP() {
         
         console.log('Submitting RSVP Data:', rsvpData);
         
-        // Use a different approach - create a form and submit
-        const formData = new FormData();
-        formData.append('data', JSON.stringify(rsvpData));
-        
-        const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+        // Send to Google Apps Script
+        const response = await fetch(GOOGLE_APPS_SCRIPT_URL + '?action=submit_rsvp', {
             method: 'POST',
-            body: JSON.stringify(rsvpData)
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(rsvpData),
+            redirect: 'follow'
         });
         
-        // Since we can't read the response with no-cors, we'll assume success
-        // and rely on the script's error handling
+        console.log('Response received');
         
+        // Generate QR code and move to success page
         if (attending) {
             generateQRCode(rsvpData);
         } else {

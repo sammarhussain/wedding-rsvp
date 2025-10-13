@@ -431,7 +431,7 @@
             margin: 20px 0;
         }
 
-        @media (max-width: 768px) {
+                    @media (max-width: 768px) {
             .header h1 {
                 font-size: 2rem;
             }
@@ -455,6 +455,27 @@
             .deadline-notice .deadline-date {
                 font-size: 1.2rem;
             }
+
+            .countdown-timer {
+                gap: 10px;
+            }
+
+            .countdown-item {
+                min-width: 70px;
+                padding: 10px 15px;
+            }
+
+            .countdown-value {
+                font-size: 1.5rem;
+            }
+
+            .countdown-label {
+                font-size: 0.75rem;
+            }
+
+            .countdown-title {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
@@ -470,6 +491,52 @@
             <div class="deadline-notice">
                 <div class="deadline-text">⏰ RSVP Deadline</div>
                 <div class="deadline-date">November 5, 2025 • 11:59 PM PST</div>
+            </div>
+
+            <!-- RSVP Deadline Countdown -->
+            <div class="countdown-container">
+                <div class="countdown-title">⏳ Time Left to RSVP</div>
+                <div class="countdown-timer" id="rsvpCountdown">
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="rsvpDays">00</span>
+                        <span class="countdown-label">Days</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="rsvpHours">00</span>
+                        <span class="countdown-label">Hours</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="rsvpMinutes">00</span>
+                        <span class="countdown-label">Minutes</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="rsvpSeconds">00</span>
+                        <span class="countdown-label">Seconds</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wedding Event Countdown -->
+            <div class="countdown-container event-countdown">
+                <div class="countdown-title">💍 Days Until Wedding</div>
+                <div class="countdown-timer" id="eventCountdown">
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="eventDays">00</span>
+                        <span class="countdown-label">Days</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="eventHours">00</span>
+                        <span class="countdown-label">Hours</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="eventMinutes">00</span>
+                        <span class="countdown-label">Minutes</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="eventSeconds">00</span>
+                        <span class="countdown-label">Seconds</span>
+                    </div>
+                </div>
             </div>
 
             <div class="progress-bar">
@@ -624,15 +691,18 @@
         const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby1ssttMs0ZV-bgWgICPJXoTYsHAkJ69Iuy9_4kQQfFEetehwOdq7uUAFfLwpU7ij0/exec';
         const SHEET_ID = '1j6nc9Kqr-OzPyemLEGQ9guHDlA9hX43Ae1x8PDA1L1Y';
         const DEADLINE = new Date('2025-11-05T23:59:59+05:00'); // Pakistan Standard Time
+        const EVENT_DATE = new Date('2025-12-21T20:00:00+05:00'); // Wedding event date
         
         let guestList = {};
         let currentGuest = null;
         let currentGuestCount = 1;
         let currentStep = 1;
         let guestSide = '';
+        let countdownInterval;
 
         window.addEventListener('load', async function() {
             checkDeadline();
+            startCountdowns();
             document.getElementById('loadingScreen').classList.add('active');
             document.getElementById('step1').style.display = 'none';
             
@@ -641,6 +711,47 @@
             document.getElementById('loadingScreen').classList.remove('active');
             document.getElementById('step1').style.display = 'block';
         });
+
+        function startCountdowns() {
+            // Update countdowns immediately
+            updateCountdown('rsvp', DEADLINE);
+            updateCountdown('event', EVENT_DATE);
+            
+            // Update every second
+            countdownInterval = setInterval(() => {
+                updateCountdown('rsvp', DEADLINE);
+                updateCountdown('event', EVENT_DATE);
+            }, 1000);
+        }
+
+        function updateCountdown(type, targetDate) {
+            const now = new Date();
+            const difference = targetDate - now;
+            
+            if (difference <= 0) {
+                // Time's up
+                document.getElementById(`${type}Days`).textContent = '00';
+                document.getElementById(`${type}Hours`).textContent = '00';
+                document.getElementById(`${type}Minutes`).textContent = '00';
+                document.getElementById(`${type}Seconds`).textContent = '00';
+                
+                if (type === 'rsvp') {
+                    const rsvpCountdown = document.getElementById('rsvpCountdown');
+                    rsvpCountdown.parentElement.innerHTML = '<div class="countdown-title" style="color: #ff6b6b;">⏰ RSVP Deadline Passed</div>';
+                }
+                return;
+            }
+            
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            
+            document.getElementById(`${type}Days`).textContent = String(days).padStart(2, '0');
+            document.getElementById(`${type}Hours`).textContent = String(hours).padStart(2, '0');
+            document.getElementById(`${type}Minutes`).textContent = String(minutes).padStart(2, '0');
+            document.getElementById(`${type}Seconds`).textContent = String(seconds).padStart(2, '0');
+        }
 
         function checkDeadline() {
             const now = new Date();
@@ -656,6 +767,9 @@
                         </p>
                     </div>
                 `;
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                }
             }
         }
 

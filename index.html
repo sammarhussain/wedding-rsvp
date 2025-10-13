@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aiman & Umar's Wedding Reception - RSVP</title>
+    <title>Umar & Aiman's Wedding Reception - RSVP</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"></script>
     <style>
         * {
@@ -87,6 +87,78 @@
 
         .content {
             padding: 40px 30px;
+        }
+
+        .deadline-notice {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(238, 90, 111, 0.3);
+        }
+
+        .deadline-notice .deadline-text {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .deadline-notice .deadline-date {
+            font-size: 1.4rem;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .countdown-container {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            color: white;
+            padding: 25px 20px;
+            border-radius: 15px;
+            margin: 25px 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(162, 155, 254, 0.3);
+        }
+
+        .countdown-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background: rgba(255,255,255,0.2);
+            padding: 15px 20px;
+            border-radius: 10px;
+            min-width: 80px;
+        }
+
+        .countdown-value {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .event-countdown {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
         }
 
         .step {
@@ -289,6 +361,7 @@
             margin: 20px 0;
             font-size: 0.95rem;
             line-height: 1.8;
+            text-align: center;
         }
 
         .contact-info h4 {
@@ -337,6 +410,27 @@
             100% { transform: rotate(360deg); }
         }
 
+        .already-submitted {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .already-submitted h2 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .already-submitted .submission-details {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2rem;
@@ -353,18 +447,31 @@
             .counter-display {
                 font-size: 28px;
             }
+
+            .deadline-notice .deadline-text {
+                font-size: 1rem;
+            }
+
+            .deadline-notice .deadline-date {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Aiman & Umar</h1>
+            <h1>Umar & Aiman</h1>
             <p class="subtitle">Together Forever</p>
             <div class="event-title">Wedding Reception</div>
         </div>
 
         <div class="content">
+            <div class="deadline-notice">
+                <div class="deadline-text">⏰ RSVP Deadline</div>
+                <div class="deadline-date">November 5, 2025 • 11:59 PM PST</div>
+            </div>
+
             <div class="progress-bar">
                 <div class="progress" id="progressBar"></div>
             </div>
@@ -383,15 +490,36 @@
                 <div class="form-group">
                     <label for="phoneNumber">Phone Number</label>
                     <input type="tel" id="phoneNumber" placeholder="e.g., 03001234567" required>
-                    <div class="error" id="phoneError">Phone number not found in guest list. Please contact us.</div>
+                    <div class="error" id="phoneError">Phone number not found in guest list. Please contact the point of contact mentioned on your invitation card.</div>
                 </div>
                 
                 <button class="btn" onclick="verifyPhone()">Find My Invitation</button>
 
                 <div class="contact-info">
                     <h4>📞 Need Help?</h4>
-                    <strong>Bride's Side:</strong> Syed Arshad Hussain – 03008223789<br>
-                    <strong>Groom's Side:</strong> Waqar Ali – 0300123456
+                    <p>Please contact the Point of Contact mentioned on your invitation card</p>
+                </div>
+            </div>
+
+            <!-- Already Submitted Screen -->
+            <div class="step" id="stepAlreadySubmitted">
+                <div class="already-submitted">
+                    <h2>✅ Response Already Submitted</h2>
+                    
+                    <div class="submission-details">
+                        <p><strong>Guest Name:</strong> <span id="submittedName"></span></p>
+                        <p><strong>Response:</strong> <span id="submittedResponse"></span></p>
+                        <p><strong>Number of Guests:</strong> <span id="submittedCount"></span></p>
+                        <p><strong>Submitted on:</strong> <span id="submittedDate"></span></p>
+                    </div>
+
+                    <p style="margin: 20px 0; font-size: 1.1rem;">
+                        If you would like to edit your response, please contact the Point of Contact mentioned on your invitation card before <strong>November 5, 2025</strong>.
+                    </p>
+
+                    <p style="font-size: 0.9rem; opacity: 0.9;">
+                        We look forward to celebrating with you! 🎉
+                    </p>
                 </div>
             </div>
 
@@ -486,26 +614,25 @@
 
                 <div class="contact-info">
                     <h4>📞 Questions or Queries?</h4>
-                    <strong>Bride's Father:</strong> Syed Arshad Hussain – 03008223789<br>
-                    <strong>Groom's Father:</strong> Waqar Ali – 0300123456
+                    <p>Please contact the Point of Contact mentioned on your invitation card</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Configuration
-        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby1ssttMs0ZV-bgWgICPJXoTYsHAkJ69Iuy9_4kQQfFEetehwOdq7uUAFfLwpU7ij0/exec';
+        const GOOGLE_APPS_SCRIPT_URL = 'YOUR_DEPLOYED_WEB_APP_URL_HERE';
         const SHEET_ID = '1j6nc9Kqr-OzPyemLEGQ9guHDlA9hX43Ae1x8PDA1L1Y';
+        const DEADLINE = new Date('2025-11-05T23:59:59+05:00'); // Pakistan Standard Time
         
         let guestList = {};
         let currentGuest = null;
         let currentGuestCount = 1;
         let currentStep = 1;
-        let guestSide = ''; // 'bride' or 'groom'
+        let guestSide = '';
 
-        // Load guest list on page load
         window.addEventListener('load', async function() {
+            checkDeadline();
             document.getElementById('loadingScreen').classList.add('active');
             document.getElementById('step1').style.display = 'none';
             
@@ -514,6 +641,23 @@
             document.getElementById('loadingScreen').classList.remove('active');
             document.getElementById('step1').style.display = 'block';
         });
+
+        function checkDeadline() {
+            const now = new Date();
+            if (now > DEADLINE) {
+                document.querySelector('.content').innerHTML = `
+                    <div class="already-submitted">
+                        <h2>⏰ RSVP Period Closed</h2>
+                        <p style="margin: 20px 0; font-size: 1.2rem;">
+                            The RSVP deadline of November 5, 2025, 11:59 PM (PST) has passed.
+                        </p>
+                        <p>
+                            For any queries, please contact the Point of Contact mentioned on your invitation card.
+                        </p>
+                    </div>
+                `;
+            }
+        }
 
         async function loadGuestListFromSheets() {
             try {
@@ -556,12 +700,18 @@
                     guestSide = currentGuest.side || 'bride';
                     phoneError.style.display = 'none';
                     
+                    // Check if already submitted
+                    if (currentGuest.rsvpStatus && currentGuest.rsvpStatus !== 'Pending') {
+                        showAlreadySubmitted(currentGuest);
+                        return;
+                    }
+                    
                     document.getElementById('guestName').textContent = currentGuest.name;
                     document.getElementById('guestPhone').textContent = phone;
                     
                     nextStep(2);
                 } else {
-                    phoneError.textContent = 'Phone number not found in guest list. Please contact us.';
+                    phoneError.textContent = 'Phone number not found in guest list. Please contact the point of contact mentioned on your invitation card.';
                     phoneError.style.display = 'block';
                 }
             } catch (error) {
@@ -572,6 +722,17 @@
                 btn.disabled = false;
                 btn.textContent = 'Find My Invitation';
             }
+        }
+
+        function showAlreadySubmitted(guest) {
+            document.getElementById('submittedName').textContent = guest.name;
+            document.getElementById('submittedResponse').textContent = guest.rsvpStatus === 'Confirmed' ? 'Attending' : 'Not Attending';
+            document.getElementById('submittedCount').textContent = guest.confirmedGuests || 0;
+            document.getElementById('submittedDate').textContent = guest.submittedDate || 'N/A';
+            
+            document.querySelector('.step.active').classList.remove('active');
+            document.getElementById('stepAlreadySubmitted').classList.add('active');
+            document.getElementById('progressBar').style.width = '100%';
         }
 
         function handleRSVPChange() {
@@ -604,11 +765,7 @@
                 document.getElementById('guestCount').textContent = currentGuestCount;
                 
                 if (newCount > maxGuests) {
-                    const contactPerson = guestSide === 'bride' 
-                        ? 'Syed Arshad Hussain at 03008223789 (Bride\'s Father)'
-                        : 'Waqar Ali at 0300123456 (Groom\'s Father)';
-                    
-                    guestError.textContent = `The number of guests exceeds the allowed limit. Please contact ${contactPerson} for assistance.`;
+                    guestError.textContent = `The number of guests exceeds the allowed limit. Please contact the Point of Contact mentioned on your invitation card.`;
                     guestError.style.display = 'block';
                     document.getElementById('guestBtn').disabled = true;
                 } else {
@@ -645,61 +802,57 @@
             }
         }
 
-async function submitRSVP() {
-    const btn = document.querySelector('#step4 .btn');
-    btn.disabled = true;
-    btn.textContent = 'Submitting...';
-    
-    try {
-        const attending = document.getElementById('rsvpResponse').value === 'yes';
-        const rsvpData = {
-            action: 'submit_rsvp',
-            name: currentGuest.name,
-            phone: currentGuest.phone,
-            side: guestSide,
-            attending: attending,
-            guestCount: currentGuestCount,
-            timestamp: new Date().toISOString()
-        };
-        
-        console.log('Submitting RSVP Data:', rsvpData);
-        
-        // Send to Google Apps Script
-        const response = await fetch(GOOGLE_APPS_SCRIPT_URL + '?action=submit_rsvp', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(rsvpData),
-            redirect: 'follow'
-        });
-        
-        console.log('Response received');
-        
-        // Generate QR code and move to success page
-        if (attending) {
-            generateQRCode(rsvpData);
-        } else {
-            document.getElementById('qrContainer').style.display = 'none';
+        async function submitRSVP() {
+            const btn = document.querySelector('#step4 .btn');
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+            
+            try {
+                const attending = document.getElementById('rsvpResponse').value === 'yes';
+                const rsvpData = {
+                    action: 'submit_rsvp',
+                    name: currentGuest.name,
+                    phone: currentGuest.phone,
+                    side: guestSide,
+                    attending: attending,
+                    guestCount: currentGuestCount,
+                    timestamp: new Date().toISOString()
+                };
+                
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain',
+                    },
+                    body: JSON.stringify(rsvpData)
+                });
+                
+                const text = await response.text();
+                console.log('Response:', text);
+                
+                if (attending) {
+                    generateQRCode(rsvpData);
+                } else {
+                    document.getElementById('qrContainer').style.display = 'none';
+                }
+                
+                nextStep(5);
+                
+            } catch (error) {
+                console.error('Error submitting RSVP:', error);
+                alert('There was an error submitting your RSVP. Please try again or contact us directly.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '✓ Confirm RSVP';
+            }
         }
-        
-        nextStep(5);
-        
-    } catch (error) {
-        console.error('Error submitting RSVP:', error);
-        alert('There was an error submitting your RSVP. Please try again or contact us directly.');
-    } finally {
-        btn.disabled = false;
-        btn.textContent = '✓ Confirm RSVP';
-    }
-}
-        
+
         function generateQRCode(data) {
             const qrData = JSON.stringify({
                 name: data.name,
                 phone: data.phone,
                 guests: data.guestCount,
-                event: "Aiman & Umar's Wedding Reception",
+                event: "Umar & Aiman's Wedding Reception",
                 date: "December 21, 2025"
             });
             
@@ -718,10 +871,10 @@ async function submitRSVP() {
 
         function addToCalendar() {
             const eventDetails = {
-                title: "Aiman & Umar's Wedding Reception",
+                title: "Umar & Aiman's Wedding Reception",
                 start: "20251221T200000",
                 end: "20251221T230000",
-                description: `Wedding Reception for Syeda Aiman Arshad & Umar Ali\n\nSchedule:\n8:00 PM - Welcome/Reception\n9:30 PM - Dinner\n11:00 PM - Rukhsati\n\nGuests: ${currentGuestCount}`,
+                description: `Wedding Reception for Umar Ali & Syeda Aiman Arshad\n\nSchedule:\n8:00 PM - Welcome/Reception\n9:30 PM - Dinner\n11:00 PM - Rukhsati\n\nGuests: ${currentGuestCount}`,
                 location: "Ballroom 19"
             };
             

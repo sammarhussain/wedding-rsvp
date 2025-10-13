@@ -650,15 +650,16 @@
                 <button class="btn btn-secondary" onclick="goBack()">← Go Back</button>
             </div>
 
-            <!-- Step 5: Success -->
+            <!-- Step 5: Success - Attending -->
             <div class="step" id="step5">
                 <h2 style="color: #00b894; margin-bottom: 20px;">🎉 RSVP Confirmed!</h2>
                 <p style="margin-bottom: 25px; color: #636e72; line-height: 1.6;">Thank you for confirming! We can't wait to celebrate with you!</p>
                 
                 <div class="qr-container" id="qrContainer">
                     <h3 style="color: #d63031;">Your Entry QR Code</h3>
-                    <p style="margin-bottom: 15px; color: #636e72;">Please show this at the venue for entry</p>
+                    <p style="margin-bottom: 15px; color: #636e72; font-weight: bold;">Please save this QR code and present it at the time of entry</p>
                     <div class="qr-code" id="qrCode"></div>
+                    <p style="margin-top: 15px; color: #636e72; font-size: 0.9rem;">Take a screenshot or save this image for entry at the venue</p>
                 </div>
                 
                 <div class="event-details">
@@ -677,9 +678,29 @@
                 </div>
                 
                 <button class="btn" onclick="addToCalendar()">📅 Add to Calendar</button>
-                <button class="btn" onclick="downloadQR()" style="background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); margin-top: 10px;">📱 Download QR Code</button>
 
                 <div class="contact-info">
+                    <h4>📞 Questions or Queries?</h4>
+                    <p>Please contact the Point of Contact mentioned on your invitation card</p>
+                </div>
+            </div>
+
+            <!-- Step 6: Declined Response -->
+            <div class="step" id="step6">
+                <h2 style="color: #636e72; margin-bottom: 20px;">😔 We'll Miss You</h2>
+                <div style="background: linear-gradient(135deg, #dfe6e9 0%, #b2bec3 100%); padding: 40px 30px; border-radius: 15px; text-align: center; color: #2d3436;">
+                    <p style="font-size: 1.3rem; margin-bottom: 20px; line-height: 1.8;">
+                        We're sorry you can't make it to our special day.
+                    </p>
+                    <p style="font-size: 1.2rem; margin-bottom: 30px; font-weight: bold;">
+                        Please remember us in your prayers. 🤲
+                    </p>
+                    <p style="font-size: 1rem; opacity: 0.9;">
+                        Your good wishes mean the world to us.
+                    </p>
+                </div>
+                
+                <div class="contact-info" style="margin-top: 30px;">
                     <h4>📞 Questions or Queries?</h4>
                     <p>Please contact the Point of Contact mentioned on your invitation card</p>
                 </div>

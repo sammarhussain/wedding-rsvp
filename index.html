@@ -704,6 +704,9 @@
     </div>
 
     <script>
+        // ⚠️ IMPORTANT: Replace this URL with your Google Apps Script Web App URL
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzOYaZrdth-fpeXr6ZdqBhWg4Ts0Q5STHZwJnkKG_O_64cYKSffUk0rpDdYCwDH-7AONA/exec';
+        
         let guestData = null;
 
         // Countdown timer for RSVP deadline
@@ -755,7 +758,7 @@
         }
 
         // Verify phone number
-        function verifyPhone() {
+        async function verifyPhone() {
             const phone = document.getElementById('phoneInput').value.trim();
             const errorDiv = document.getElementById('errorMessage');
             
@@ -779,20 +782,37 @@
             button.disabled = true;
             button.textContent = 'Searching...';
 
-            google.script.run
-                .withSuccessHandler(handlePhoneVerification)
-                .withFailureHandler(handleError)
-                .checkPhoneNumber(phone);
+            try {
+                const formData = new FormData();
+                formData.append('action', 'checkPhone');
+                formData.append('phone', phone);
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                handlePhoneVerification(result);
+            } catch (error) {
+                console.error('Error:', error);
+                handleError(error);
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Find My Reservation';
+            }
         }
 
         // Handle phone verification response
         function handlePhoneVerification(result) {
-            const button = document.querySelector('#phoneVerification button');
-            button.disabled = false;
-            button.textContent = 'Find My Reservation';
-            
             const errorDiv = document.getElementById('errorMessage');
             
+            if (result.error) {
+                errorDiv.textContent = 'An error occurred: ' + result.error;
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
             if (!result.found) {
                 errorDiv.textContent = 'Phone number not recognized. Please verify your number or contact the Point of Contact mentioned on your invitation card before the RSVP deadline.';
                 errorDiv.classList.remove('hidden');
@@ -827,7 +847,7 @@
         }
 
         // Submit RSVP
-        function submitRSVP() {
+        async function submitRSVP() {
             const attending = document.querySelector('input[name="attending"]:checked');
             const errorDiv = document.getElementById('formError');
             
@@ -872,10 +892,29 @@
                 sheetName: guestData.sheetName
             };
 
-            google.script.run
-                .withSuccessHandler((result) => handleSubmissionSuccess(result, isAttending, numberOfGuests))
-                .withFailureHandler(handleError)
-                .submitRSVP(submissionData);
+            try {
+                const formData = new FormData();
+                formData.append('action', 'submitRSVP');
+                formData.append('data', JSON.stringify(submissionData));
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+
+                handleSubmissionSuccess(result, isAttending, numberOfGuests);
+            } catch (error) {
+                console.error('Error:', error);
+                handleError(error);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Confirm RSVP';
+            }
         }
 
         // Handle successful submission
@@ -901,12 +940,6 @@
             
             errorDiv.textContent = 'An error occurred. Please try again or contact the Point of Contact mentioned on your invitation card.';
             errorDiv.classList.remove('hidden');
-            
-            const submitBtn = document.getElementById('submitBtn');
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Confirm RSVP';
-            }
         }
 
         // Add event to calendar

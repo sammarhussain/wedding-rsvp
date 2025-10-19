@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Umar & Aiman's Wedding Reception - RSVP</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"></script>
+    <title>Wedding RSVP - Umar & Aiman</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;600&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -13,166 +14,176 @@
         }
 
         body {
-            font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 50%, #e17055 100%);
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(183, 149, 197, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
+            max-width: 700px;
+            margin: 0 auto;
             background: white;
-            border-radius: 25px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
-            max-width: 650px;
-            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
             overflow: hidden;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .floral-border {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .floral-border.top-left {
+            top: 0;
+            left: 0;
+            width: 150px;
+            height: 150px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M10,10 Q20,5 30,10 Q35,20 30,30 Q20,35 10,30 Q5,20 10,10 M15,15 Q20,12 25,15 Q27,20 25,25 Q20,27 15,25 Q12,20 15,15" fill="%23b795c5" opacity="0.3"/><path d="M30,30 Q40,25 50,30 Q55,40 50,50 Q40,55 30,50 Q25,40 30,30 M35,35 Q40,32 45,35 Q47,40 45,45 Q40,47 35,45 Q32,40 35,35" fill="%237877c6" opacity="0.3"/></svg>') no-repeat;
+            background-size: contain;
+        }
+
+        .floral-border.top-right {
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M90,10 Q80,5 70,10 Q65,20 70,30 Q80,35 90,30 Q95,20 90,10 M85,15 Q80,12 75,15 Q73,20 75,25 Q80,27 85,25 Q88,20 85,15" fill="%23b795c5" opacity="0.3"/><path d="M70,30 Q60,25 50,30 Q45,40 50,50 Q60,55 70,50 Q75,40 70,30 M65,35 Q60,32 55,35 Q53,40 55,45 Q60,47 65,45 Q68,40 65,35" fill="%237877c6" opacity="0.3"/></svg>') no-repeat;
+            background-size: contain;
+        }
+
+        .floral-border.bottom-left {
+            bottom: 0;
+            left: 0;
+            width: 150px;
+            height: 150px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M10,90 Q20,95 30,90 Q35,80 30,70 Q20,65 10,70 Q5,80 10,90 M15,85 Q20,88 25,85 Q27,80 25,75 Q20,73 15,75 Q12,80 15,85" fill="%23b795c5" opacity="0.3"/><path d="M30,70 Q40,75 50,70 Q55,60 50,50 Q40,45 30,50 Q25,60 30,70 M35,65 Q40,68 45,65 Q47,60 45,55 Q40,53 35,55 Q32,60 35,65" fill="%237877c6" opacity="0.3"/></svg>') no-repeat;
+            background-size: contain;
+        }
+
+        .floral-border.bottom-right {
+            bottom: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M90,90 Q80,95 70,90 Q65,80 70,70 Q80,65 90,70 Q95,80 90,90 M85,85 Q80,88 75,85 Q73,80 75,75 Q80,73 85,75 Q88,80 85,85" fill="%23b795c5" opacity="0.3"/><path d="M70,70 Q60,75 50,70 Q45,60 50,50 Q60,45 70,50 Q75,60 70,70 M65,65 Q60,68 55,65 Q53,60 55,55 Q60,53 65,55 Q68,60 65,65" fill="%237877c6" opacity="0.3"/></svg>') no-repeat;
+            background-size: contain;
         }
 
         .header {
-            background: linear-gradient(135deg, #d63031 0%, #e17055 100%);
-            color: white;
-            padding: 50px 30px;
             text-align: center;
+            padding: 50px 40px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             position: relative;
         }
 
-        .header::before {
-            content: '🌹';
-            position: absolute;
-            top: 20px;
-            left: 30px;
-            font-size: 30px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .header::after {
-            content: '💍';
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            font-size: 30px;
-            animation: float 3s ease-in-out infinite 1.5s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .header h1 {
-            font-size: 2.8rem;
+        .couple-names {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5em;
+            font-weight: 700;
+            letter-spacing: 3px;
             margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            font-weight: 400;
+            animation: fadeIn 1s ease-in;
         }
 
-        .header .subtitle {
-            font-size: 1.3rem;
+        .event-date {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1em;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
             opacity: 0.95;
+        }
+
+        .rsvp-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2em;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .rsvp-instruction {
+            font-size: 0.9em;
             font-style: italic;
-            margin-bottom: 10px;
+            opacity: 0.9;
+            line-height: 1.5;
         }
 
-        .event-title {
-            font-size: 1.5rem;
-            background: rgba(255,255,255,0.2);
-            padding: 10px 20px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        .content {
-            padding: 40px 30px;
-        }
-
-        .deadline-notice {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-            color: white;
+        .countdown-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
             padding: 20px;
             border-radius: 15px;
-            margin-bottom: 25px;
-            text-align: center;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(238, 90, 111, 0.3);
-        }
-
-        .deadline-notice .deadline-text {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-
-        .deadline-notice .deadline-date {
-            font-size: 1.4rem;
-            background: rgba(255,255,255,0.2);
-            padding: 10px 20px;
-            border-radius: 10px;
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        .countdown-container {
-            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
-            color: white;
-            padding: 25px 20px;
-            border-radius: 15px;
-            margin: 25px 0;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(162, 155, 254, 0.3);
+            margin: 20px 0;
         }
 
         .countdown-title {
-            font-size: 1.3rem;
+            font-size: 1em;
             margin-bottom: 15px;
-            font-weight: bold;
+            font-weight: 400;
         }
 
         .countdown-timer {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        .countdown-item {
-            background: rgba(255,255,255,0.2);
-            padding: 15px 20px;
-            border-radius: 10px;
-            min-width: 80px;
+        .time-unit {
+            text-align: center;
         }
 
-        .countdown-value {
-            font-size: 2rem;
-            font-weight: bold;
-            display: block;
+        .time-value {
+            font-size: 2.2em;
+            font-weight: 600;
+            font-family: 'Cormorant Garamond', serif;
         }
 
-        .countdown-label {
-            font-size: 0.9rem;
+        .time-label {
+            font-size: 0.75em;
             opacity: 0.9;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .event-countdown {
-            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        .content {
+            padding: 40px;
         }
 
-        .step {
-            display: none;
-            animation: fadeIn 0.6s ease-in;
-        }
-
-        .step.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .form-section {
+            margin-bottom: 30px;
         }
 
         .form-group {
@@ -182,851 +193,716 @@
         label {
             display: block;
             margin-bottom: 10px;
-            font-weight: bold;
-            color: #2d3436;
-            font-size: 1.05rem;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.95em;
         }
 
-        input, select {
+        input[type="tel"],
+        input[type="number"] {
             width: 100%;
-            padding: 14px 18px;
-            border: 2px solid #dfe6e9;
-            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s ease;
-            font-family: 'Georgia', serif;
+            font-family: 'Montserrat', sans-serif;
         }
 
-        input:focus, select:focus {
+        input:focus {
             outline: none;
-            border-color: #e17055;
-            box-shadow: 0 0 0 4px rgba(225, 112, 85, 0.1);
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
         }
 
-        .btn {
-            background: linear-gradient(135deg, #d63031 0%, #e17055 100%);
-            color: white;
-            border: none;
-            padding: 16px 35px;
-            border-radius: 12px;
-            font-size: 17px;
-            font-weight: bold;
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .radio-option:hover {
+            border-color: #764ba2;
+            background: rgba(118, 75, 162, 0.05);
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #764ba2;
+        }
+
+        .radio-option.selected {
+            border-color: #764ba2;
+            background: rgba(118, 75, 162, 0.1);
+        }
+
+        button {
             width: 100%;
-            margin-top: 15px;
-            font-family: 'Georgia', serif;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
-        .btn:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(225, 112, 85, 0.4);
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(118, 75, 162, 0.3);
         }
 
-        .btn:disabled {
-            background: #b2bec3;
+        button:disabled {
+            background: #ccc;
             cursor: not-allowed;
             transform: none;
         }
 
-        .btn-secondary {
-            background: #636e72;
-            margin-top: 10px;
-        }
-
-        .btn-secondary:hover:not(:disabled) {
-            background: #2d3436;
-        }
-
-        .error {
-            color: #d63031;
-            font-size: 15px;
-            margin-top: 10px;
-            display: none;
-            padding: 12px;
-            background: #ffe0e0;
-            border-radius: 8px;
-            border-left: 4px solid #d63031;
-        }
-
-        .success {
-            color: #00b894;
-            font-size: 15px;
-            margin-top: 10px;
-        }
-
-        .guest-counter {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 15px;
+        .message-box {
             padding: 20px;
-            background: #f8f9fa;
-            border-radius: 12px;
-        }
-
-        .counter-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 3px solid #e17055;
-            background: white;
-            color: #e17055;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .counter-btn:hover {
-            background: #e17055;
-            color: white;
-            transform: scale(1.1);
-        }
-
-        .counter-display {
-            font-size: 32px;
-            font-weight: bold;
-            color: #2d3436;
-            min-width: 80px;
+            border-radius: 10px;
+            margin: 20px 0;
             text-align: center;
+            animation: fadeIn 0.5s ease-in;
         }
 
-        .qr-container {
-            text-align: center;
-            margin-top: 30px;
+        .error-message {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
         }
 
-        .qr-code {
-            margin: 25px auto;
-            display: inline-block;
-            padding: 25px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        .success-message {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
         }
 
-        .info-card {
-            background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
-            border-left: 5px solid #e17055;
-            padding: 25px;
-            margin: 25px 0;
-            border-radius: 12px;
-            line-height: 1.8;
+        .success-message h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #155724;
         }
 
-        .info-card strong {
-            color: #d63031;
+        .decline-message {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+
+        .decline-message h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #721c24;
         }
 
         .event-details {
             background: #f8f9fa;
             padding: 25px;
-            border-radius: 12px;
+            border-radius: 10px;
             margin: 25px 0;
-            line-height: 2;
+            border-left: 4px solid #764ba2;
         }
 
         .event-details h3 {
-            color: #d63031;
-            margin-bottom: 15px;
-            font-size: 1.4rem;
+            font-family: 'Cormorant Garamond', serif;
+            color: #764ba2;
+            font-size: 1.8em;
+            margin-bottom: 20px;
         }
 
-        .timing-item {
+        .detail-item {
+            margin: 12px 0;
             padding: 10px 0;
-            border-bottom: 1px dashed #dfe6e9;
+            border-bottom: 1px solid #e0e0e0;
+            line-height: 1.6;
         }
 
-        .timing-item:last-child {
+        .detail-item:last-child {
             border-bottom: none;
         }
 
-        .gift-notice {
-            background: #fff3cd;
-            border: 2px solid #ffeaa7;
-            padding: 18px;
-            border-radius: 12px;
-            margin: 25px 0;
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .venue-link {
+            color: #764ba2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .venue-link:hover {
+            text-decoration: underline;
+        }
+
+        .qr-container {
             text-align: center;
-            color: #856404;
-            font-weight: bold;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 25px 0;
+            border: 2px dashed #764ba2;
+        }
+
+        .qr-container h3 {
+            font-family: 'Cormorant Garamond', serif;
+            color: #764ba2;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .qr-code {
+            margin: 20px auto;
+            display: inline-block;
+        }
+
+        .qr-instruction {
+            margin-top: 15px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .qr-data {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #666;
+            line-height: 1.6;
         }
 
         .contact-info {
-            background: #e8f4f8;
-            padding: 20px;
-            border-radius: 12px;
-            margin: 20px 0;
-            font-size: 0.95rem;
-            line-height: 1.8;
-            text-align: center;
-        }
-
-        .contact-info h4 {
-            color: #0984e3;
-            margin-bottom: 10px;
-        }
-
-        .progress-bar {
-            height: 6px;
-            background: #dfe6e9;
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 30px;
-        }
-
-        .progress {
-            height: 100%;
-            background: linear-gradient(90deg, #d63031, #e17055);
-            transition: width 0.4s ease;
-            width: 20%;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            color: #636e72;
-        }
-
-        .loading.active {
-            display: block;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #e17055;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .already-submitted {
-            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            line-height: 1.8;
-        }
-
-        .already-submitted h2 {
-            margin-bottom: 20px;
-            font-size: 2rem;
-        }
-
-        .already-submitted .submission-details {
-            background: rgba(255,255,255,0.2);
+            background: #e7f3ff;
             padding: 20px;
             border-radius: 10px;
             margin: 20px 0;
+            text-align: center;
+            font-weight: 500;
+            color: #004085;
         }
 
-                    @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
+        .faq-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .faq-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2em;
+            color: #764ba2;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .faq-item {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            background: #e9ecef;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        .faq-answer {
+            color: #666;
+            line-height: 1.6;
+            font-style: italic;
+        }
+        
+        .need-help {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .need-help-title {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        
+        .need-help-text {
+            font-size: 0.95em;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: #f8f9fa;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .footer-couple {
+            font-weight: 700;
+            font-size: 1.3em;
+            letter-spacing: 2px;
+            color: #764ba2;
+            margin-bottom: 5px;
+        }
+        
+        .footer-date {
+            font-size: 1em;
+            color: #666;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
             }
-            
-            .header .subtitle {
-                font-size: 1.1rem;
+
+            .couple-names {
+                font-size: 2.5em;
             }
-            
+
             .content {
                 padding: 30px 20px;
-            }
-
-            .counter-display {
-                font-size: 28px;
-            }
-
-            .deadline-notice .deadline-text {
-                font-size: 1rem;
-            }
-
-            .deadline-notice .deadline-date {
-                font-size: 1.2rem;
             }
 
             .countdown-timer {
                 gap: 10px;
             }
 
-            .countdown-item {
-                min-width: 70px;
-                padding: 10px 15px;
+            .time-value {
+                font-size: 1.8em;
             }
 
-            .countdown-value {
-                font-size: 1.5rem;
+            .floral-border {
+                width: 100px;
+                height: 100px;
             }
+        }
 
-            .countdown-label {
-                font-size: 0.75rem;
-            }
-
-            .countdown-title {
-                font-size: 1.1rem;
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="floral-border top-left"></div>
+        <div class="floral-border top-right"></div>
+        <div class="floral-border bottom-left"></div>
+        <div class="floral-border bottom-right"></div>
+
         <div class="header">
-            <h1>Umar & Aiman</h1>
-            <p class="subtitle">Together Forever</p>
-            <div class="event-title">Wedding Reception</div>
+            <div class="couple-names">UMAR & AIMAN</div>
+            <div class="event-date">Sunday, 21st December, 2025<br>Karachi, Pakistan</div>
+            <div class="rsvp-title">RSVP</div>
+            <div class="rsvp-instruction">
+                If you're responding for you/your family, you will be able to RSVP<br>
+                for the entire group in one submission
+            </div>
+
+            <div class="countdown-section">
+                <div class="countdown-title">RSVP Deadline: Wednesday, 5th November, 2025 at 11:59 PM PKT</div>
+                <div class="countdown-timer" id="rsvpCountdown"></div>
+            </div>
         </div>
 
         <div class="content">
-            <div class="deadline-notice">
-                <div class="deadline-text">⏰ RSVP Deadline</div>
-                <div class="deadline-date">November 5, 2025 • 11:59 PM PST</div>
-            </div>
-
-            <!-- RSVP Deadline Countdown -->
-            <div class="countdown-container">
-                <div class="countdown-title">⏳ Time Left to RSVP</div>
-                <div class="countdown-timer" id="rsvpCountdown">
-                    <div class="countdown-item">
-                        <span class="countdown-value" id="rsvpDays">00</span>
-                        <span class="countdown-label">Days</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="countdown-value" id="rsvpHours">00</span>
-                        <span class="countdown-label">Hours</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="countdown-value" id="rsvpMinutes">00</span>
-                        <span class="countdown-label">Minutes</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="countdown-value" id="rsvpSeconds">00</span>
-                        <span class="countdown-label">Seconds</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Wedding Event Countdown -->
-            <div class="countdown-container event-countdown">
-                <div class="countdown-title">💍 Days Until Wedding</div>
-                <div class="countdown-timer" id="eventCountdown">
-                    <div class="countdown-item">
-                        <span class="countdown-value" id="eventDays">00</span>
-                        <span class="countdown-label">Days</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="countdown-value" id="eventHours">00</span>
-                        <span class="countdown-label">Hours</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="countdown-value" id="eventMinutes">00</span>
-                        <span class="countdown-label">Minutes</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="countdown-value" id="eventSeconds">00</span>
-                        <span class="countdown-label">Seconds</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="progress-bar">
-                <div class="progress" id="progressBar"></div>
-            </div>
-
-            <!-- Loading Screen -->
-            <div class="loading" id="loadingScreen">
-                <div class="spinner"></div>
-                <p>Loading guest list...</p>
-            </div>
-
-            <!-- Step 1: Phone Verification -->
-            <div class="step active" id="step1">
-                <h2 style="color: #d63031; margin-bottom: 20px;">📱 Find Your Invitation</h2>
-                <p style="margin-bottom: 25px; color: #636e72; line-height: 1.6;">Please enter your phone number to locate your invitation.</p>
-                
+            <div id="phoneVerification">
                 <div class="form-group">
-                    <label for="phoneNumber">Phone Number</label>
-                    <input type="tel" id="phoneNumber" placeholder="e.g., 03001234567" required>
-                    <div class="error" id="phoneError">Phone number not found in guest list. Please contact the point of contact mentioned on your invitation card.</div>
+                    <label for="phoneInput">Please enter your phone number to find your reservation</label>
+                    <input type="tel" id="phoneInput" placeholder="e.g., 03001234567" required>
                 </div>
-                
-                <button class="btn" onclick="verifyPhone()">Find My Invitation</button>
+                <button onclick="verifyPhone()">Find My Reservation</button>
+                <div id="errorMessage" class="message-box error-message hidden"></div>
+            </div>
+
+            <div id="rsvpForm" class="hidden">
+                <div class="form-section">
+                    <div class="form-group">
+                        <label>Will you be attending?</label>
+                        <div class="radio-group">
+                            <label class="radio-option" onclick="selectOption(this, 'yes')">
+                                <input type="radio" name="attending" value="yes" onchange="toggleGuestCount()">
+                                <span>Yes, I'll be there</span>
+                            </label>
+                            <label class="radio-option" onclick="selectOption(this, 'no')">
+                                <input type="radio" name="attending" value="no" onchange="toggleGuestCount()">
+                                <span>Sorry, I can't make it</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="guestCountGroup" class="form-group hidden">
+                        <label for="guestCount">Number of Guests Attending</label>
+                        <input type="number" id="guestCount" min="1" placeholder="Enter number of guests">
+                    </div>
+
+                    <button onclick="submitRSVP()" id="submitBtn">Confirm RSVP</button>
+                    <div id="formError" class="message-box error-message hidden"></div>
+                </div>
+            </div>
+
+            <div id="confirmationSection" class="hidden">
+                <div id="successMsg" class="message-box success-message hidden">
+                    <h2>RSVP Confirmed</h2>
+                    <p>Thank you for confirming! We can't wait to celebrate with you!</p>
+                </div>
+
+                <div id="declineMsg" class="message-box decline-message hidden">
+                    <h2>We'll Miss You</h2>
+                    <p>Sorry we missed you. Please remember us in your prayers.</p>
+                </div>
+
+                <div id="eventDetailsSection" class="hidden">
+                    <div class="event-details">
+                        <h3>Event Details</h3>
+                        <div class="detail-item">
+                            <span class="detail-label">Date:</span> Sunday, 21st December, 2025
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Venue:</span> 
+                            <a href="https://share.google/RHJyp52NljSPmbKHZ" target="_blank" class="venue-link">Ballroom 19, Karachi</a>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Schedule:</span><br>
+                            8:00 PM - Welcome/Reception<br>
+                            9:30 PM - Dinner<br>
+                            11:00 PM - Rukhsati
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Important:</span> Punctuality of time will be highly appreciated. We will follow the time strictly as mentioned.
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Note:</span> Sorry, no boxed gifts please. Your presence is our present!
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Confirmed Guests:</span> <span id="confirmedGuests"></span>
+                        </div>
+                    </div>
+
+                    <div class="qr-container">
+                        <h3>Your Entry QR Code</h3>
+                        <p class="qr-instruction">Please save this QR code and present it at the venue entrance</p>
+                        <div id="qrcode" class="qr-code"></div>
+                        <div id="qrData" class="qr-data"></div>
+                    </div>
+
+                    <button onclick="addToCalendar()">Add to Calendar</button>
+                </div>
 
                 <div class="contact-info">
-                    <h4>📞 Need Help?</h4>
-                    <p>Please contact the Point of Contact mentioned on your invitation card</p>
+                    For any questions or to edit your response, please contact the Point of Contact mentioned on your invitation card.
                 </div>
             </div>
 
-            <!-- Already Submitted Screen -->
-            <div class="step" id="stepAlreadySubmitted">
-                <div class="already-submitted">
-                    <h2>✅ Response Already Submitted</h2>
-                    
-                    <div class="submission-details">
-                        <p><strong>Guest Name:</strong> <span id="submittedName"></span></p>
-                        <p><strong>Response:</strong> <span id="submittedResponse"></span></p>
-                        <p><strong>Number of Guests:</strong> <span id="submittedCount"></span></p>
-                        <p><strong>Submitted on:</strong> <span id="submittedDate"></span></p>
-                    </div>
+            <div class="faq-section">
+                <div class="faq-item">
+                    <div class="faq-question">Q: Can I bring an additional guest?</div>
+                    <div class="faq-answer">A: Due to limited space, we are only able to accommodate guests formally invited.</div>
+                </div>
 
-                    <p style="margin: 20px 0; font-size: 1.1rem;">
-                        If you would like to edit your response, please contact the Point of Contact mentioned on your invitation card before <strong>November 5, 2025</strong>.
-                    </p>
+                <div class="faq-item">
+                    <div class="faq-question">Q: Need help?</div>
+                    <div class="faq-answer">A: Please refer to the RSVP tab on your invitation card.</div>
+                </div>
 
-                    <p style="font-size: 0.9rem; opacity: 0.9;">
-                        We look forward to celebrating with you! 🎉
-                    </p>
+                <div class="faq-item">
+                    <div class="faq-question">Q: Can I bring box gifts?</div>
+                    <div class="faq-answer">A: Sorry, no boxed gifts please. Your presence is our present!</div>
                 </div>
             </div>
-
-            <!-- Step 2: RSVP Response -->
-            <div class="step" id="step2">
-                <h2 style="color: #d63031; margin-bottom: 20px;">💌 Will You Join Us?</h2>
-                <p style="margin-bottom: 25px; color: #636e72; line-height: 1.6;">We would be honored to have you celebrate with us!</p>
-                
-                <div class="info-card">
-                    <strong>Guest Name:</strong> <span id="guestName"></span><br>
-                    <strong>Phone:</strong> <span id="guestPhone"></span>
-                </div>
-
-                <div class="form-group">
-                    <label>Your Response</label>
-                    <select id="rsvpResponse" onchange="handleRSVPChange()">
-                        <option value="">Please select...</option>
-                        <option value="yes">✓ Yes, I'll be there! 🎉</option>
-                        <option value="no">✗ Sorry, I can't make it 😔</option>
-                    </select>
-                </div>
-                
-                <button class="btn" onclick="handleResponse()" id="responseBtn" disabled>Continue</button>
+            
+            <div class="need-help">
+                <div class="need-help-title">Need Help?</div>
+                <div class="need-help-text">Please refer to the RSVP tab on your invitation card</div>
             </div>
-
-            <!-- Step 3: Guest Count -->
-            <div class="step" id="step3">
-                <h2 style="color: #d63031; margin-bottom: 20px;">👥 Number of Guests</h2>
-                <p style="margin-bottom: 25px; color: #636e72; line-height: 1.6;">How many people will be attending from your family?</p>
-                
-                <div class="form-group">
-                    <label>Number of Guests Attending</label>
-                    <div class="guest-counter">
-                        <button type="button" class="counter-btn" onclick="changeGuestCount(-1)">−</button>
-                        <div class="counter-display" id="guestCount">1</div>
-                        <button type="button" class="counter-btn" onclick="changeGuestCount(1)">+</button>
-                    </div>
-                    <div class="error" id="guestError"></div>
-                </div>
-                
-                <button class="btn" onclick="nextStep(4)" id="guestBtn">Continue</button>
-            </div>
-
-            <!-- Step 4: Confirmation -->
-            <div class="step" id="step4">
-                <h2 style="color: #d63031; margin-bottom: 20px;">✅ Confirm Your RSVP</h2>
-                <p style="margin-bottom: 25px; color: #636e72; line-height: 1.6;">Please review your details before confirming:</p>
-                
-                <div class="info-card">
-                    <strong>Guest Name:</strong> <span id="confirmName"></span><br>
-                    <strong>Phone:</strong> <span id="confirmPhone"></span><br>
-                    <strong>Attending:</strong> <span id="confirmAttending"></span><br>
-                    <strong>Number of Guests:</strong> <span id="confirmGuestCount"></span>
-                </div>
-
-                <div class="gift-notice">
-                    💝 <strong>Gift Policy:</strong> No boxed gifts please. Your presence is our present!
-                </div>
-                
-                <button class="btn" onclick="submitRSVP()">✓ Confirm RSVP</button>
-                <button class="btn btn-secondary" onclick="goBack()">← Go Back</button>
-            </div>
-
-            <!-- Step 5: Success - Attending -->
-            <div class="step" id="step5">
-                <h2 style="color: #00b894; margin-bottom: 20px;">🎉 RSVP Confirmed!</h2>
-                <p style="margin-bottom: 25px; color: #636e72; line-height: 1.6;">Thank you for confirming! We can't wait to celebrate with you!</p>
-                
-                <div class="qr-container" id="qrContainer">
-                    <h3 style="color: #d63031;">Your Entry QR Code</h3>
-                    <p style="margin-bottom: 15px; color: #636e72; font-weight: bold;">Please save this QR code and present it at the time of entry</p>
-                    <div class="qr-code" id="qrCode"></div>
-                    <p style="margin-top: 15px; color: #636e72; font-size: 0.9rem;">Take a screenshot or save this image for entry at the venue</p>
-                </div>
-                
-                <div class="event-details">
-                    <h3>📅 Event Details</h3>
-                    <strong>Date:</strong> December 21, 2025<br>
-                    <strong>Venue:</strong> Ballroom 19<br>
-                    <a href="https://share.google/6AMFvwVS0rel8DnpA" target="_blank" style="color: #0984e3;">📍 View Location</a>
-                    
-                    <div style="margin-top: 20px; padding: 15px; background: #fff; border-radius: 8px;">
-                        <strong style="color: #d63031; display: block; margin-bottom: 10px;">⏰ Program Schedule</strong>
-                        <em style="font-size: 0.9rem; color: #636e72;">Punctuality will be highly appreciated</em>
-                        <div class="timing-item"><strong>8:00 PM</strong> – Welcome/Reception</div>
-                        <div class="timing-item"><strong>9:30 PM</strong> – Dinner</div>
-                        <div class="timing-item"><strong>11:00 PM</strong> – Rukhsati</div>
-                    </div>
-                </div>
-                
-                <button class="btn" onclick="addToCalendar()">📅 Add to Calendar</button>
-
-                <div class="contact-info">
-                    <h4>📞 Questions or Queries?</h4>
-                    <p>Please contact the Point of Contact mentioned on your invitation card</p>
-                </div>
-            </div>
-
-            <!-- Step 6: Declined Response -->
-            <div class="step" id="step6">
-                <h2 style="color: #636e72; margin-bottom: 20px;">😔 We'll Miss You</h2>
-                <div style="background: linear-gradient(135deg, #dfe6e9 0%, #b2bec3 100%); padding: 40px 30px; border-radius: 15px; text-align: center; color: #2d3436;">
-                    <p style="font-size: 1.3rem; margin-bottom: 20px; line-height: 1.8;">
-                        We're sorry you can't make it to our special day.
-                    </p>
-                    <p style="font-size: 1.2rem; margin-bottom: 30px; font-weight: bold;">
-                        Please remember us in your prayers. 🤲
-                    </p>
-                    <p style="font-size: 1rem; opacity: 0.9;">
-                        Your good wishes mean the world to us.
-                    </p>
-                </div>
-                
-                <div class="contact-info" style="margin-top: 30px;">
-                    <h4>📞 Questions or Queries?</h4>
-                    <p>Please contact the Point of Contact mentioned on your invitation card</p>
-                </div>
-            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-couple">U&A</div>
+            <div class="footer-date">21.12.2025</div>
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
-        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4DAZuPGII44w1838LRdBEPEkLky4RQPtUynwME8QhRorZewv58BuWJYuV07-0dFcp/exec';
-        const SHEET_ID = '1j6nc9Kqr-OzPyemLEGQ9guHDlA9hX43Ae1x8PDA1L1Y';
-        const DEADLINE = new Date('2025-11-05T23:59:59+05:00'); // Pakistan Standard Time
-        const EVENT_DATE = new Date('2025-12-21T20:00:00+05:00'); // Wedding event date
-        
-        let guestList = {};
-        let currentGuest = null;
-        let currentGuestCount = 1;
-        let currentStep = 1;
-        let guestSide = '';
-        let countdownInterval;
+        let guestData = null;
 
-        window.addEventListener('load', async function() {
-            checkDeadline();
-            startCountdowns();
-            document.getElementById('loadingScreen').classList.add('active');
-            document.getElementById('step1').style.display = 'none';
-            
-            await loadGuestListFromSheets();
-            
-            document.getElementById('loadingScreen').classList.remove('active');
-            document.getElementById('step1').style.display = 'block';
-        });
+        // Countdown timer for RSVP deadline
+        function updateCountdown() {
+            const rsvpDeadline = new Date('2025-11-05T23:59:59+05:00').getTime();
+            const now = new Date().getTime();
+            const distance = rsvpDeadline - now;
 
-        function startCountdowns() {
-            // Update countdowns immediately
-            updateCountdown('rsvp', DEADLINE);
-            updateCountdown('event', EVENT_DATE);
-            
-            // Update every second
-            countdownInterval = setInterval(() => {
-                updateCountdown('rsvp', DEADLINE);
-                updateCountdown('event', EVENT_DATE);
-            }, 1000);
-        }
-
-        function updateCountdown(type, targetDate) {
-            const now = new Date();
-            const difference = targetDate - now;
-            
-            if (difference <= 0) {
-                // Time's up
-                document.getElementById(`${type}Days`).textContent = '00';
-                document.getElementById(`${type}Hours`).textContent = '00';
-                document.getElementById(`${type}Minutes`).textContent = '00';
-                document.getElementById(`${type}Seconds`).textContent = '00';
-                
-                if (type === 'rsvp') {
-                    const rsvpCountdown = document.getElementById('rsvpCountdown');
-                    rsvpCountdown.parentElement.innerHTML = '<div class="countdown-title" style="color: #ff6b6b;">⏰ RSVP Deadline Passed</div>';
-                }
+            if (distance < 0) {
+                document.getElementById('rsvpCountdown').innerHTML = '<div class="time-unit"><div class="time-value">CLOSED</div></div>';
                 return;
             }
-            
-            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-            
-            document.getElementById(`${type}Days`).textContent = String(days).padStart(2, '0');
-            document.getElementById(`${type}Hours`).textContent = String(hours).padStart(2, '0');
-            document.getElementById(`${type}Minutes`).textContent = String(minutes).padStart(2, '0');
-            document.getElementById(`${type}Seconds`).textContent = String(seconds).padStart(2, '0');
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('rsvpCountdown').innerHTML = `
+                <div class="time-unit">
+                    <div class="time-value">${days}</div>
+                    <div class="time-label">Days</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value">${hours}</div>
+                    <div class="time-label">Hours</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value">${minutes}</div>
+                    <div class="time-label">Minutes</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value">${seconds}</div>
+                    <div class="time-label">Seconds</div>
+                </div>
+            `;
         }
 
-        function checkDeadline() {
-            const now = new Date();
-            if (now > DEADLINE) {
-                document.querySelector('.content').innerHTML = `
-                    <div class="already-submitted">
-                        <h2>⏰ RSVP Period Closed</h2>
-                        <p style="margin: 20px 0; font-size: 1.2rem;">
-                            The RSVP deadline of November 5, 2025, 11:59 PM (PST) has passed.
-                        </p>
-                        <p>
-                            For any queries, please contact the Point of Contact mentioned on your invitation card.
-                        </p>
-                    </div>
-                `;
-                if (countdownInterval) {
-                    clearInterval(countdownInterval);
-                }
-            }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        function selectOption(element, value) {
+            document.querySelectorAll('.radio-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
         }
 
-        async function loadGuestListFromSheets() {
-            try {
-                const response = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?action=get_guest_list`);
-                const result = await response.json();
-                
-                if (result.success) {
-                    guestList = result.data;
-                    console.log('Guest list loaded successfully');
-                } else {
-                    console.error('Failed to load guest list:', result.message);
-                }
-            } catch (error) {
-                console.error('Error loading guest list:', error);
-                alert('Unable to load guest list. Please refresh the page or contact us.');
-            }
-        }
-
-        async function verifyPhone() {
-            const phone = document.getElementById('phoneNumber').value.trim();
-            const phoneError = document.getElementById('phoneError');
-            const btn = document.querySelector('#step1 .btn');
+        function verifyPhone() {
+            const phone = document.getElementById('phoneInput').value.trim();
+            const errorDiv = document.getElementById('errorMessage');
             
             if (!phone) {
-                phoneError.textContent = 'Please enter your phone number.';
-                phoneError.style.display = 'block';
+                errorDiv.textContent = 'Please enter your phone number.';
+                errorDiv.classList.remove('hidden');
                 return;
             }
 
-            btn.disabled = true;
-            btn.textContent = 'Searching...';
-            
-            try {
-                if (Object.keys(guestList).length === 0) {
-                    await loadGuestListFromSheets();
-                }
-                
-                if (guestList[phone]) {
-                    currentGuest = guestList[phone];
-                    guestSide = currentGuest.side || 'bride';
-                    phoneError.style.display = 'none';
-                    
-                    // Check if already submitted
-                    if (currentGuest.rsvpStatus && currentGuest.rsvpStatus !== 'Pending') {
-                        showAlreadySubmitted(currentGuest);
-                        return;
-                    }
-                    
-                    document.getElementById('guestName').textContent = currentGuest.name;
-                    document.getElementById('guestPhone').textContent = phone;
-                    
-                    nextStep(2);
-                } else {
-                    phoneError.textContent = 'Phone number not found in guest list. Please contact the point of contact mentioned on your invitation card.';
-                    phoneError.style.display = 'block';
-                }
-            } catch (error) {
-                console.error('Error verifying phone:', error);
-                phoneError.textContent = 'Error checking guest list. Please try again.';
-                phoneError.style.display = 'block';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Find My Invitation';
+            // Check if past deadline
+            const now = new Date();
+            const deadline = new Date('2025-11-05T23:59:59+05:00');
+            if (now > deadline) {
+                errorDiv.textContent = 'RSVP period has closed. For questions please contact the Point of Contact on your invitation card.';
+                errorDiv.classList.remove('hidden');
+                return;
             }
+
+            errorDiv.classList.add('hidden');
+            const button = document.querySelector('#phoneVerification button');
+            button.disabled = true;
+            button.textContent = 'Searching...';
+
+            google.script.run
+                .withSuccessHandler(handlePhoneVerification)
+                .withFailureHandler(handleError)
+                .checkPhoneNumber(phone);
         }
 
-        function showAlreadySubmitted(guest) {
-            document.getElementById('submittedName').textContent = guest.name;
-            document.getElementById('submittedResponse').textContent = guest.rsvpStatus === 'Confirmed' ? 'Attending' : 'Not Attending';
-            document.getElementById('submittedCount').textContent = guest.confirmedGuests || 0;
-            document.getElementById('submittedDate').textContent = guest.submittedDate || 'N/A';
+        function handlePhoneVerification(result) {
+            const button = document.querySelector('#phoneVerification button');
+            button.disabled = false;
+            button.textContent = 'Find My Reservation';
             
-            document.querySelector('.step.active').classList.remove('active');
-            document.getElementById('stepAlreadySubmitted').classList.add('active');
-            document.getElementById('progressBar').style.width = '100%';
-        }
-
-        function handleRSVPChange() {
-            const response = document.getElementById('rsvpResponse').value;
-            document.getElementById('responseBtn').disabled = !response;
-        }
-
-        function handleResponse() {
-            const response = document.getElementById('rsvpResponse').value;
+            const errorDiv = document.getElementById('errorMessage');
             
-            if (response === 'no') {
-                document.getElementById('confirmName').textContent = currentGuest.name;
-                document.getElementById('confirmPhone').textContent = currentGuest.phone;
-                document.getElementById('confirmAttending').textContent = 'Not Attending';
-                document.getElementById('confirmGuestCount').textContent = '0';
-                currentGuestCount = 0;
-                nextStep(4);
+            if (!result.found) {
+                errorDiv.textContent = 'Phone number not recognized. Please verify your number or contact the Point of Contact mentioned on your invitation card before the RSVP deadline.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            if (result.alreadySubmitted) {
+                errorDiv.innerHTML = `
+                    <strong>Response Already Submitted</strong><br><br>
+                    Your response was submitted on ${result.submittedDate}.<br><br>
+                    If you would like to edit your response, please contact the Point of Contact mentioned on your invitation card before November 5, 2025.
+                `;
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            guestData = result;
+            document.getElementById('phoneVerification').classList.add('hidden');
+            document.getElementById('rsvpForm').classList.remove('hidden');
+        }
+
+        function toggleGuestCount() {
+            const attending = document.querySelector('input[name="attending"]:checked').value;
+            const guestCountGroup = document.getElementById('guestCountGroup');
+            
+            if (attending === 'yes') {
+                guestCountGroup.classList.remove('hidden');
             } else {
-                nextStep(3);
+                guestCountGroup.classList.add('hidden');
             }
         }
 
-        function changeGuestCount(change) {
-            const newCount = currentGuestCount + change;
-            const maxGuests = currentGuest ? currentGuest.maxGuests : 1;
-            const guestError = document.getElementById('guestError');
+        function submitRSVP() {
+            const attending = document.querySelector('input[name="attending"]:checked');
+            const errorDiv = document.getElementById('formError');
             
-            if (newCount >= 1) {
-                currentGuestCount = newCount;
-                document.getElementById('guestCount').textContent = currentGuestCount;
+            if (!attending) {
+                errorDiv.textContent = 'Please select whether you will be attending.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            const isAttending = attending.value === 'yes';
+            let numberOfGuests = 0;
+
+            if (isAttending) {
+                numberOfGuests = parseInt(document.getElementById('guestCount').value);
                 
-                if (newCount > maxGuests) {
-                    guestError.textContent = `The number of guests exceeds the allowed limit. Please contact the Point of Contact mentioned on your invitation card.`;
-                    guestError.style.display = 'block';
-                    document.getElementById('guestBtn').disabled = true;
-                } else {
-                    guestError.style.display = 'none';
-                    document.getElementById('guestBtn').disabled = false;
+                if (!numberOfGuests || numberOfGuests < 1) {
+                    errorDiv.textContent = 'Please enter the number of guests attending.';
+                    errorDiv.classList.remove('hidden');
+                    return;
+                }
+
+                if (numberOfGuests > guestData.maxGuests) {
+                    errorDiv.innerHTML = `
+                        Guest count exceeded. Please contact the Point of Contact on your invitation card.
+                    `;
+                    errorDiv.classList.remove('hidden');
+                    return;
                 }
             }
+
+            errorDiv.classList.add('hidden');
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            const submissionData = {
+                phone: document.getElementById('phoneInput').value.trim(),
+                attending: isAttending ? 'Yes' : 'No',
+                numberOfGuests: numberOfGuests,
+                side: guestData.side,
+                row: guestData.row,
+                sheetName: guestData.sheetName
+            };
+
+            google.script.run
+                .withSuccessHandler((result) => handleSubmissionSuccess(result, isAttending, numberOfGuests))
+                .withFailureHandler(handleError)
+                .submitRSVP(submissionData);
         }
 
-        function nextStep(step) {
-            document.querySelector('.step.active').classList.remove('active');
-            document.getElementById(`step${step}`).classList.add('active');
-            
-            const progress = (step / 5) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
-            
-            currentStep = step;
-            
-            if (step === 4) {
-                document.getElementById('confirmName').textContent = currentGuest.name;
-                document.getElementById('confirmPhone').textContent = currentGuest.phone;
-                
-                const attending = document.getElementById('rsvpResponse').value === 'yes';
-                document.getElementById('confirmAttending').textContent = attending ? 'Yes' : 'Not Attending';
-                document.getElementById('confirmGuestCount').textContent = currentGuestCount;
-            }
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        function handleSubmissionSuccess(result, isAttending, numberOfGuests) {
+            document.getElementById('rsvpForm').classList.add('hidden');
+            document.getElementById('confirmationSection').classList.remove('hidden');
 
-        function goBack() {
-            if (currentStep > 1) {
-                nextStep(currentStep - 1);
-            }
-        }
-
-        async function submitRSVP() {
-            const btn = document.querySelector('#step4 .btn');
-            btn.disabled = true;
-            btn.textContent = 'Submitting...';
-            
-            try {
-                const attending = document.getElementById('rsvpResponse').value === 'yes';
-                const rsvpData = {
-                    action: 'submit_rsvp',
-                    name: currentGuest.name,
-                    phone: currentGuest.phone,
-                    side: guestSide,
-                    attending: attending,
-                    guestCount: currentGuestCount,
-                    timestamp: new Date().toISOString()
-                };
-                
-                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'text/plain',
-                    },
-                    body: JSON.stringify(rsvpData)
-                });
-                
-                const text = await response.text();
-                console.log('Response:', text);
-                
-                if (attending) {
-                    generateQRCode(rsvpData);
-                } else {
-                    document.getElementById('qrContainer').style.display = 'none';
-                }
-                
-                nextStep(5);
-                
-            } catch (error) {
-                console.error('Error submitting RSVP:', error);
-                alert('There was an error submitting your RSVP. Please try again or contact us directly.');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = '✓ Confirm RSVP';
+            if (isAttending) {
+                document.getElementById('successMsg').classList.remove('hidden');
+                document.getElementById('eventDetailsSection').classList.remove('hidden');
+                document.getElementById('confirmedGuests').textContent = numberOfGuests;
+            } else {
+                document.getElementById('declineMsg').classList.remove('hidden');
             }
         }
 
-        function generateQRCode(data) {
-            const qrData = JSON.stringify({
-                name: data.name,
-                phone: data.phone,
-                guests: data.guestCount,
-                event: "Umar & Aiman's Wedding Reception",
-                date: "December 21, 2025"
-            });
+        function handleError(error) {
+            console.error('Error:', error);
+            const errorDiv = document.getElementById('formError').classList.contains('hidden') 
+                ? document.getElementById('errorMessage') 
+                : document.getElementById('formError');
             
-            const qrCodeDiv = document.getElementById('qrCode');
-            qrCodeDiv.innerHTML = '';
+            errorDiv.textContent = 'An error occurred. Please try again or contact the Point of Contact mentioned on your invitation card.';
+            errorDiv.classList.remove('hidden');
             
-            new QRCode(qrCodeDiv, {
-                text: qrData,
-                width: 220,
-                height: 220,
-                colorDark: '#d63031',
-                colorLight: '#ffffff',
-                correctLevel: QRCode.CorrectLevel.H
-            });
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Confirm RSVP';
+            }
         }
 
         function addToCalendar() {
-            const eventDetails = {
-                title: "Umar & Aiman's Wedding Reception",
-                start: "20251221T200000",
-                end: "20251221T230000",
-                description: `Wedding Reception for Umar Ali & Syeda Aiman Arshad\n\nSchedule:\n8:00 PM - Welcome/Reception\n9:30 PM - Dinner\n11:00 PM - Rukhsati\n\nGuests: ${currentGuestCount}`,
-                location: "Ballroom 19"
+            const event = {
+                title: 'Umar & Aiman - Wedding Reception',
+                start: '20251221T200000',
+                end: '20251221T230000',
+                description: 'Wedding Reception\\n\\nSchedule:\\n8:00 PM - Welcome/Reception\\n9:30 PM - Dinner\\n11:00 PM - Rukhsati\\n\\nVenue: Ballroom 19, Karachi\\n\\nNote: Punctuality of time will be highly appreciated. We will follow the time strictly as mentioned. No boxed gifts please - your presence is our present!',
+                location: 'Ballroom 19, Karachi'
             };
-            
-            const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventDetails.title)}&dates=${eventDetails.start}/${eventDetails.end}&details=${encodeURIComponent(eventDetails.description)}&location=${encodeURIComponent(eventDetails.location)}`;
-            
-            window.open(calendarUrl, '_blank');
-        }
 
-        function downloadQR() {
-            const canvas = document.querySelector('#qrCode canvas');
-            if (canvas) {
-                const link = document.createElement('a');
-                link.download = 'wedding-rsvp-qr-code.png';
-                link.href = canvas.toDataURL();
-                link.click();
-            }
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Wedding RSVP//EN
+BEGIN:VEVENT
+DTSTART:${event.start}
+DTEND:${event.end}
+SUMMARY:${event.title}
+DESCRIPTION:${event.description}
+LOCATION:${event.location}
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR`;
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'umar-aiman-wedding.ics';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
         }
     </script>
 </body>
-</html>
+</html>title">Q/A</div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Q: What are the event dates and venue?</div>
+                    <div class="faq-answer">A: Please refer to your invitation card for more event details.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q: What number should I use to submit the response?</div>
+                    <div class="faq-answer">A: Please use the same number where you received the invitation card. If you're responding for yourself/your family, you will be able to RSVP for the entire group in one submission. Still having issues or need to edit your submitted response, please contact the Point of Contact on your invitation card.</div>
+                </div>
+
+                <div class="faq-

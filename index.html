@@ -607,7 +607,7 @@
             <div id="phoneVerification">
                 <div class="form-group">
                     <label for="phoneInput">Please enter your phone number to find your reservation</label>
-                    <input type="tel" id="phoneInput" placeholder="e.g., 03001234567" required>
+                    <input type="tel" id="phoneInput" placeholder="e.g., 03123456789" required>
                 </div>
                 <button onclick="verifyPhone()">Find My Reservation</button>
                 <div id="errorMessage" class="message-box error-message hidden"></div>
@@ -706,17 +706,12 @@
 
                 <div class="faq-item">
                     <div class="faq-question">Q: What number should I use to submit my response?</div>
-                    <div class="faq-answer">A: Please use the same number where you received your invitation card. If you are responding for yourself or your family, you will be able to RSVP for your entire group in one submission. If you are still having issues or need to edit your submitted response, please contact the Point of Contact mentioned on your invitation card.</div>
+                    <div class="faq-answer">A: Please use the same number where you received your invitation card. If you are responding for yourself or your family, you will be able to RSVP for your entire group in one submission. If you are still having issues or need to edit your submitted response, please contact the person listed on your invitation card.</div>
                 </div>
 
                 <div class="faq-item">
                     <div class="faq-question">Q: Can I bring an additional guest?</div>
                     <div class="faq-answer">A: Due to limited space, we are only able to accommodate guests who have been formally invited.</div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">Q: Need help?</div>
-                    <div class="faq-answer">A: Please refer to the RSVP information on your invitation card.</div>
                 </div>
 
                 <div class="faq-item">
@@ -899,6 +894,7 @@
 
             const submissionData = {
                 phone: document.getElementById('phoneInput').value.trim(),
+                guestName: guestData.name,
                 attending: isAttending ? 'Yes' : 'No',
                 numberOfGuests: isAttending ? guestCount : 0,
                 side: guestData.side,

@@ -572,7 +572,6 @@
 
             <div class="countdown-section">
                 <div class="countdown-title">RSVP Deadline: Wednesday, 5th November, 2025 at 11:59 PM PKT</div>
-                <div class="countdown-timer" id="rsvpCountdown"></div>
             </div>
         </div>
 
@@ -704,10 +703,11 @@
     </div>
 
     <script>
-        // ⚠️ IMPORTANT: Replace this URL with your Google Apps Script Web App URL
+        // ⚠️ REPLACE THIS WITH YOUR GOOGLE APPS SCRIPT URL
         const API_URL = 'https://script.google.com/macros/s/AKfycbzOYaZrdth-fpeXr6ZdqBhWg4Ts0Q5STHZwJnkKG_O_64cYKSffUk0rpDdYCwDH-7AONA/exec';
         
         let guestData = null;
+        let callbackCounter = 0;
 
         // Countdown timer for RSVP deadline
         function updateCountdown() {
@@ -745,11 +745,9 @@
             `;
         }
 
-        // Start countdown
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
-        // Select radio option with visual feedback
         function selectOption(element, value) {
             document.querySelectorAll('.radio-option').forEach(opt => {
                 opt.classList.remove('selected');
@@ -757,8 +755,28 @@
             element.classList.add('selected');
         }
 
-        // Verify phone number
-        async function verifyPhone() {
+        // JSONP helper function
+        function makeJSONPRequest(url, callback) {
+            const callbackName = 'jsonpCallback' + (++callbackCounter);
+            
+            window[callbackName] = function(data) {
+                callback(null, data);
+                delete window[callbackName];
+                document.body.removeChild(script);
+            };
+
+            const script = document.createElement('script');
+            script.src = url + '&callback=' + callbackName;
+            script.onerror = function() {
+                callback(new Error('Failed to load script'));
+                delete window[callbackName];
+                document.body.removeChild(script);
+            };
+            
+            document.body.appendChild(script);
+        }
+
+        function verifyPhone() {
             const phone = document.getElementById('phoneInput').value.trim();
             const errorDiv = document.getElementById('errorMessage');
             
@@ -768,7 +786,6 @@
                 return;
             }
 
-            // Check if past deadline
             const now = new Date();
             const deadline = new Date('2025-11-05T23:59:59+05:00');
             if (now > deadline) {
@@ -782,28 +799,21 @@
             button.disabled = true;
             button.textContent = 'Searching...';
 
-            try {
-                const formData = new FormData();
-                formData.append('action', 'checkPhone');
-                formData.append('phone', phone);
+            const url = `${API_URL}?action=checkPhone&phone=${encodeURIComponent(phone)}`;
 
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.json();
-                handlePhoneVerification(result);
-            } catch (error) {
-                console.error('Error:', error);
-                handleError(error);
-            } finally {
+            makeJSONPRequest(url, function(error, result) {
                 button.disabled = false;
                 button.textContent = 'Find My Reservation';
-            }
+
+                if (error) {
+                    handleError(error);
+                    return;
+                }
+
+                handlePhoneVerification(result);
+            });
         }
 
-        // Handle phone verification response
         function handlePhoneVerification(result) {
             const errorDiv = document.getElementById('errorMessage');
             
@@ -834,7 +844,6 @@
             document.getElementById('rsvpForm').classList.remove('hidden');
         }
 
-        // Toggle guest count field
         function toggleGuestCount() {
             const attending = document.querySelector('input[name="attending"]:checked').value;
             const guestCountGroup = document.getElementById('guestCountGroup');
@@ -846,8 +855,7 @@
             }
         }
 
-        // Submit RSVP
-        async function submitRSVP() {
+        function submitRSVP() {
             const attending = document.querySelector('input[name="attending"]:checked');
             const errorDiv = document.getElementById('formError');
             
@@ -892,32 +900,20 @@
                 sheetName: guestData.sheetName
             };
 
-            try {
-                const formData = new FormData();
-                formData.append('action', 'submitRSVP');
-                formData.append('data', JSON.stringify(submissionData));
+            const url = `${API_URL}?action=submitRSVP&data=${encodeURIComponent(JSON.stringify(submissionData))}`;
 
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.json();
-                
-                if (result.error) {
-                    throw new Error(result.error);
+            makeJSONPRequest(url, function(error, result) {
+                if (error || result.error) {
+                    handleError(error || new Error(result.error));
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Confirm RSVP';
+                    return;
                 }
 
                 handleSubmissionSuccess(result, isAttending, numberOfGuests);
-            } catch (error) {
-                console.error('Error:', error);
-                handleError(error);
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Confirm RSVP';
-            }
+            });
         }
 
-        // Handle successful submission
         function handleSubmissionSuccess(result, isAttending, numberOfGuests) {
             document.getElementById('rsvpForm').classList.add('hidden');
             document.getElementById('confirmationSection').classList.remove('hidden');
@@ -931,7 +927,6 @@
             }
         }
 
-        // Handle errors
         function handleError(error) {
             console.error('Error:', error);
             const errorDiv = document.getElementById('formError').classList.contains('hidden') 
@@ -942,7 +937,6 @@
             errorDiv.classList.remove('hidden');
         }
 
-        // Add event to calendar
         function addToCalendar() {
             const event = {
                 title: 'Umar & Aiman - Wedding Reception',
@@ -976,7 +970,6 @@ END:VCALENDAR`;
             URL.revokeObjectURL(url);
         }
 
-        // Allow Enter key to submit
         document.getElementById('phoneInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 verifyPhone();
